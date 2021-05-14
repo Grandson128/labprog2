@@ -1,2 +1,3 @@
 # labprog2
-T9 predictive text
+Como compilar:
+    gcc-o versionversion.c`pkg-config--libs--cflagsgtk+-3.0`
