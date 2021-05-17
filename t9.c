@@ -12,13 +12,12 @@ void button_clicked(GtkWidget *widget, gpointer data){
 }
 
 GdkPixbuf *create_pixbuf(const gchar * filename) {
-    
+
    GdkPixbuf *pixbuf;
    GError *error = NULL;
    pixbuf = gdk_pixbuf_new_from_file(filename, &error);
-   
+
    if (!pixbuf) {
-       
       fprintf(stderr, "%s\n", error->message);
       g_error_free(error);
    }
@@ -39,16 +38,16 @@ static void activate(GtkApplication *app, gpointer user_data) {
 
   /* ICON */
   icon = create_pixbuf("logo.png");
-  gtk_window_set_icon(GTK_WINDOW(window), icon); 
+  gtk_window_set_icon(GTK_WINDOW(window), icon);
 
-    /* DISPLAY SCREEN */
+  /* DISPLAY SCREEN */
   display = gtk_label_new (NULL);
-  gtk_label_set_text (display,"ola amigos"); 
+  gtk_label_set_text (display,"ola amigos");
 
   /******************/
 
   /* TABLE */
-  gchar *values[12] = { " 1\n ", " 2\nabc ", " 3\ndef ", 
+  gchar *values[12] = { " 1\n ", " 2\nabc ", " 3\ndef ",
      " 4\nghi ", " 5\njkl ", " 6\nmno ",
      " 7\npqrs ", " 8\ntuv ", " 9\nwxyz ",
      " *\nnext ", " 0\nspace " , " #\ndelete "
@@ -58,9 +57,9 @@ static void activate(GtkApplication *app, gpointer user_data) {
   gtk_grid_set_row_spacing(GTK_GRID(grid),2);
   gtk_grid_set_column_spacing(GTK_GRID(grid),2);
 
-  //The position of child is determined by left and top . 
+  //The position of child is determined by left and top .
   //The number of “cells” that child will occupy is determined by width and height .
-  //ocupa 3 celulas e 
+  //ocupa 3 celulas e
   gtk_grid_attach(GTK_GRID(grid), display,0, 1, 3, 1);
 
   int i = 1;
@@ -73,7 +72,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
       gtk_grid_attach(GTK_GRID(grid), btn, j, i, 1, 1);
       pos++;
     }
-  } 
+  }
   gtk_container_add(GTK_CONTAINER(window), grid);
   /******************/
 
@@ -84,7 +83,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 
   gtk_widget_show_all(window);
 
-  g_object_unref(icon);   
+  g_object_unref(icon);
 
   gtk_main();
 
@@ -97,15 +96,14 @@ int main (int argc, char *argv[]) {
     GtkApplication *app;
     int status;
 
-     gtk_disable_setlocale(); 
-      gtk_init(&argc, &argv);
+    gtk_disable_setlocale();
+    gtk_init(&argc, &argv);
 
     app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
-    
+
     g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
     status = g_application_run (G_APPLICATION (app), argc, argv);
     g_object_unref (app);
 
     return status;
 }
-
