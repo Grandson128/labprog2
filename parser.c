@@ -5,6 +5,34 @@
 #include <ctype.h>
 #include <wchar.h>
 #include <locale.h>
+#include "hashtable.h"
+
+int m = 100000;
+int nWords=0;
+Word* table[10000];
+Word* empty;
+Word* item;
+
+int hash(string v, int m){
+    int i, h=v[0];
+
+    for(i=0;v[i] != '\0'; i++){
+        h = (h * 251 + v[i]) % m;
+    }
+
+    return h;
+}
+
+
+
+void printMap(){
+
+    for(int i=0; i<nWords;i++){
+        printf("Occurrences: %d   Key: %d  Text: %s\n", table[i]->occurrences, table[i]->key, table[i]->text);
+    }
+}
+
+
 
 
 void fileWordsToKeys(const char *filename){
@@ -65,7 +93,63 @@ void fileWordsToKeys(const char *filename){
 }
 
 
+void stringLower(char *str){
+    for (int i = 0; i < strlen(str); ++i) {
+        str[i] = tolower((unsigned char) str[i]);
+    }
+}
+
+/**
+ * 
+ * TODO: Populate hashtable
+*/
+void countWords(const char *filename){
+    FILE* file = fopen(filename, "r");
+    int count = 1;
+    int nTasks=0, lastID=0;
+    char line[1024];
+    
+
+    while (fgets(line, 1024, file)){
+        char *tmp = strdup(line);
+        char *tok = tmp, *end = tmp;
+
+        if(isdigit(*tok) != 0){
+
+        }else{
+            while (tok != NULL && *tok != '\0' && tok != "\n") {
+                strsep(&end, " \n");
+                stringLower(tok);
+
+                //printf("nWords: %d  Occurrences: %d   Key: %d  Text: %s\n",nWords, new.occurrences, new.key, new.text);
+                printf("%d - %s\n",count, tok);
+                
+                tok = end;
+                count++;
+            }
+        
+        
+        }
+
+       
+        free(tmp);
+        count++; // and delete this too at your own risk
+    }
+
+    
+
+    fclose(file);
+
+    //printMap();
+ 
+}
+
+
+
+
 int main(){
-    fileWordsToKeys("lusiadasClean.txt");
+    //fileWordsToKeys("lusiadasClean.txt");
+    countWords("test.txt");
+
     return 0;
 }
