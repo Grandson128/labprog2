@@ -1,4 +1,5 @@
-#include <gtk/gtk.h>  
+#include <gtk/gtk.h>
+#include <string.h> 
 
   GtkWidget *window;
   GtkWidget *vbox;
@@ -8,7 +9,7 @@
 
   GtkWidget *checkbutton;
 
-  GtkWidget *sugestoes; //spot para as caixinhas
+  GtkWidget *sugestoes; //spot para as caixinhas, tira que ser disabled se t9 unchecked
 
   GtkWidget *grid;
   GtkWidget *button1;
@@ -24,74 +25,168 @@
   GtkWidget *button0;
   GtkWidget *buttonDelete;
 
-void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event,){
-  if(event->type == GDK_DOUBLE_BUTTON_PRESS)
-    gtk_label_set_text((GtkLabel*)label,".");
-  if(event->type == GDK_BUTTON_PRESS)
-    gtk_label_set_text((GtkLabel*)label,"1");
+  GString str;
 
+void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
+  
   /*
+  if(event->type == GDK_TWO_BUTTON_PRESS)
+    g_print("doubleckick\n");
+    //gtk_label_set_text((GtkLabel*)label,".");
+  
+  if(event->type == GDK_BUTTON_PRESS)
+    g_print("um\n");
+
+    //gtk_label_set_text((GtkLabel*)label,"1");
+
+  
   if(event->type == GDK_TRIPLE_BUTTON_PRESS)
     gtk_label_set_text((GtkLabel*)label,"!");
   if(event->type == GDK_FOURTH_PRESS)
     gtk_label_set_text((GtkLabel*)label,"?");
+
+  GDateTime *now = g_date_time_now_local();
+  gchar *my_time = g_date_time_format(now,"%s");
+  gtk_label_set_text((GtkLabel *) label, (char *) my_time);
+
+
   */
+
+
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "1";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 
 }
 
 void button2_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"2");
+
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "2";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button3_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"3");
+  
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "3";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button4_clicked(GtkWidget *widget, gpointer data){
   
-  gtk_label_set_text((GtkLabel*)label,"4");
+  
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "4";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button5_clicked(GtkWidget *widget, gpointer data){
   
-  gtk_label_set_text((GtkLabel*)label,"5");
+  
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "5";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button6_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"6");
+  
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "6";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button7_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"7");
+  
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "7";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button8_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"8");
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "8";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button9_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"9");
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "9";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void buttonNext_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,NULL);
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = " ";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
 void button0_clicked(GtkWidget *widget, gpointer data){
 
-  gtk_label_set_text((GtkLabel*)label,"0");
+  gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+
+  gchar *str2 = "0";
+
+  strcat(str1,str2);
+
+  gtk_label_set_text((GtkLabel*)label,str1);
 }
 
+//eliminar ultimo char
 void buttonDelete_clicked(GtkWidget *widget, gpointer data){
-  
-  gtk_label_set_text((GtkLabel*)label,NULL);
+
+  gchar *str = gtk_label_get_text((GtkLabel*)label);
+
+  str[strlen(str)-1] = '\0';
+
+  gtk_label_set_text((GtkLabel*)label,str);
 }
 
 static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
@@ -102,7 +197,18 @@ static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
       gtk_window_set_title (window, "Smart Writing ON");
   else
       gtk_window_set_title (window, "Smart Writing OFF");
+
+
 }
+
+/* DESLIGAR UMA FUNÇÃO DO CALLBACK
+void toogle_signal(GtkWidget *widget, gpointer button){
+  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))){
+    handler_id=g_signal_connect(G_OBJECT(button),"clicked",G_CALLBACK(button_clicked),NULL);
+  } else {
+    g_signal_handler_disconnect(button,handler_id);
+  }
+}*/
 
 
 GdkPixbuf *create_pixbuf(const gchar * filename) {
@@ -134,35 +240,13 @@ int main(int argc, char* argv[]) {
   gtk_container_add(GTK_CONTAINER(window), vbox);
 
   label=gtk_label_new("YOUR TEXT HERE");
+
   checkbutton=gtk_check_button_new_with_label("Smart writing");
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
-  
-  /* GRID
-  gchar *values[12] = { " 1\n ", " 2\nabc ", " 3\ndef ",
-       " 4\nghi ", " 5\njkl ", " 6\nmno ",
-       " 7\npqrs ", " 8\ntuv ", " 9\nwxyz ",
-       " *\nnext ", " 0\nspace " , " #\ndelete "
-   };
-  */
 
   grid = gtk_grid_new();
   gtk_grid_set_row_spacing(GTK_GRID(grid),2);
   gtk_grid_set_column_spacing(GTK_GRID(grid),2);
-
-  /*
-  int i = 0;
-  int j = 0;
-  int pos = 0;
-  */  
-  
-  /*
-  for (i=0; i < 4 ; i++) {
-    for (j=0; j < 3; j++) {
-      button = gtk_button_new_with_label(values[pos]);
-      gtk_grid_attach(GTK_GRID(grid), button, j, i, 1, 1);
-      pos++;
-    }
-  }*/
 
   button1 = gtk_button_new_with_label("1\n.!?");
   gtk_grid_attach(GTK_GRID(grid), button1, 0, 0, 1, 1);
@@ -223,11 +307,11 @@ int main(int argc, char* argv[]) {
 
 
   gtk_widget_show_all(window);
-   // g_object_unref(icon);
 
   gtk_main();
   return 0;
 }
+
 
 
 /*
