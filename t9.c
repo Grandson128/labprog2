@@ -210,7 +210,7 @@ void toogle_signal(GtkWidget *widget, gpointer button){
   }
 }*/
 
-
+//LOGO
 GdkPixbuf *create_pixbuf(const gchar * filename) {
 
    GdkPixbuf *pixbuf;
