@@ -1,36 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string.h>
 #include <ctype.h>
 #include <wchar.h>
 #include <locale.h>
 #include "hashtable.h"
-
-int m = 100000;
-int nWords=0;
-Word* table[10000];
-Word* empty;
-Word* item;
-
-int hash(string v, int m){
-    int i, h=v[0];
-
-    for(i=0;v[i] != '\0'; i++){
-        h = (h * 251 + v[i]) % m;
-    }
-
-    return h;
-}
-
-
-
-void printMap(){
-
-    for(int i=0; i<nWords;i++){
-        printf("Occurrences: %d   Key: %d  Text: %s\n", table[i]->occurrences, table[i]->key, table[i]->text);
-    }
-}
 
 
 
@@ -92,7 +66,6 @@ void fileWordsToKeys(const char *filename){
     fclose(codedFile);
 }
 
-
 void stringLower(char *str){
     for (int i = 0; i < strlen(str); ++i) {
         str[i] = tolower((unsigned char) str[i]);
@@ -106,6 +79,7 @@ void stringLower(char *str){
 void countWords(const char *filename){
     FILE* file = fopen(filename, "r");
     int count = 1;
+    int i=0;
     int nTasks=0, lastID=0;
     char line[1024];
     
@@ -113,6 +87,19 @@ void countWords(const char *filename){
     while (fgets(line, 1024, file)){
         char *tmp = strdup(line);
         char *tok = tmp, *end = tmp;
+        i=0;
+        /*
+        debugging char by char int value
+        while (line[i] != '\0') {       
+                if(isdigit(line[i]) != 0){
+                }else{
+                    printf("õ ---> %d", 'õ');
+                    printf("%d - %d\n",count, line[i]);
+                }
+                i++;
+        }
+        */
+
 
         if(isdigit(*tok) != 0){
 
@@ -122,6 +109,7 @@ void countWords(const char *filename){
                 stringLower(tok);
 
                 //printf("nWords: %d  Occurrences: %d   Key: %d  Text: %s\n",nWords, new.occurrences, new.key, new.text);
+                //printf("õ ---> %d", 'õ');
                 printf("%d - %s\n",count, tok);
                 
                 tok = end;

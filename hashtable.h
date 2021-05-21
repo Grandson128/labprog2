@@ -4,20 +4,20 @@
 
 
 typedef struct node* List;
-
+typedef char *String;
 typedef struct node{
-    int info;
+    int occurrences;
+    String code;
+    String text;
     List next;
 }Node;
 
 
-typedef char *string;
 
-typedef struct{
-    int key;
-    int occurrences;
-    string text;
-} Word;
+// typedef struct{
+//     int key;
+//     List *wordList;
+// } Dictionary;
 
 
 
