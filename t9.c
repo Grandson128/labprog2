@@ -27,39 +27,42 @@
 
   GString str;
 
+  GDateTime *last_click;
+  
+  int clickCount=0;
+  
+int timed_click(GtkWidget *widget, gpointer data){
+
+    GDateTime *now = g_date_time_now_local();
+
+    if (g_date_time_difference(now, last_click) < 1000000) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+
+    last_click=now;
+
+}
+
+// 1.!?
 void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
-  
-  /*
-  if(event->type == GDK_TWO_BUTTON_PRESS)
-    g_print("doubleckick\n");
-    //gtk_label_set_text((GtkLabel*)label,".");
-  
-  if(event->type == GDK_BUTTON_PRESS)
-    g_print("um\n");
-
-    //gtk_label_set_text((GtkLabel*)label,"1");
-
-  
-  if(event->type == GDK_TRIPLE_BUTTON_PRESS)
-    gtk_label_set_text((GtkLabel*)label,"!");
-  if(event->type == GDK_FOURTH_PRESS)
-    gtk_label_set_text((GtkLabel*)label,"?");
-
-  GDateTime *now = g_date_time_now_local();
-  gchar *my_time = g_date_time_format(now,"%s");
-  gtk_label_set_text((GtkLabel *) label, (char *) my_time);
-
-
-  */
-
 
   gchar *str1 = gtk_label_get_text((GtkLabel*)label);
+  gchar *str2;
 
-  gchar *str2 = "1";
+  if(timed_click(button1,data)) {
+    str2="1";
+    strcat(str1,str2);
+    gtk_label_set_text((GtkLabel*)label,str1);
+  }
+  else {
+    str2="!";
+    strcat(str1,str2);
+    gtk_label_set_text((GtkLabel*)label,str1);
 
-  strcat(str1,str2);
-
-  gtk_label_set_text((GtkLabel*)label,str1);
+  }
 
 }
 
@@ -210,7 +213,7 @@ void toogle_signal(GtkWidget *widget, gpointer button){
   }
 }*/
 
-
+//LOGO
 GdkPixbuf *create_pixbuf(const gchar * filename) {
 
    GdkPixbuf *pixbuf;
