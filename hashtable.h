@@ -4,11 +4,15 @@
 
 
 typedef struct node* List;
-typedef char *String;
-typedef struct node{
+typedef struct word{
     int occurrences;
-    String code;
-    String text;
+    char *code;
+    char *text;
+} Word;
+
+
+typedef struct node{
+    Word *word;
     List next;
 }Node;
 
