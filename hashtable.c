@@ -10,9 +10,7 @@ List createList(){
 
     if (aux != NULL) {
         aux->next = NULL;
-        aux->word->occurrences=0;
-        aux->word->code=NULL;
-        aux->word->text=NULL;
+        aux->word = NULL;
     }
     else {
         printf("No memory available to allocate list");
@@ -35,17 +33,29 @@ Word *searchList(List list, char *text){
     int occurrences;
     List previous = list;
     List current = list->next;
+    printf("\n\n  track 2  \n\n");
 
-    while ((current) != NULL && strcmp(current->word->text, text) != 0 ){
-        previous = current;
-        current = (current)->next;
-    }
+    if(current != NULL){
+        while ((current) != NULL && strcmp(current->word->text, text) != 0 ){
+            previous = current;
+            current = (current)->next;
+        }
 
-    if ((current) != NULL && strcmp(current->word->text, text) != 0 ){
-        current = NULL;
-        /* Se elemento não encontrado*/
+        if ((current) != NULL && current->word != NULL && strcmp(current->word->text, text) != 0 ){
+            current = NULL;
+            /* Se elemento não encontrado*/
+            return NULL;
+        }
+
+    }else{
+        printf("\n\n  track 2.1  \n\n");
         return NULL;
+
     }
+
+    
+
+    
 
     return current->word;
 }
@@ -81,10 +91,13 @@ void insertWordInList (List list, Word *word){
     List current = list->next;
     List new = (List)malloc(sizeof(Node));
 
+    printf("\n\n  track 1  \n\n");
+
     Word *aux = searchList(list, word->text);
+    
 
     if(aux == NULL){
-
+    printf("\n\n  track 1.2  \n\n");
         new->word = word;
         new->word->occurrences += 1;
 
@@ -150,13 +163,6 @@ void printWordList(List list){
         aux = aux->next;
     }
 }
-
-
-
-
-
-
-
 
 
 

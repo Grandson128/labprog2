@@ -5,7 +5,15 @@
 #include <wchar.h>
 #include <locale.h>
 #include "hashtable.h"
+#include "hashtable.c"
 
+#define m 20
+
+Word *newWord;
+
+int nWords=0;
+List map[m];
+List test;
 
 
 
@@ -80,7 +88,7 @@ void countWords(const char *filename){
     FILE* file = fopen(filename, "r");
     int count = 1;
     int i=0;
-    int nTasks=0, lastID=0;
+
     char line[1024];
     
 
@@ -112,6 +120,8 @@ void countWords(const char *filename){
                 //printf("õ ---> %d", 'õ');
                 printf("%d - %s\n",count, tok);
                 
+
+
                 tok = end;
                 count++;
             }
@@ -126,18 +136,84 @@ void countWords(const char *filename){
 
     
 
-    fclose(file);
+    fclose(file); 
+}
 
-    //printMap();
- 
+
+void generateMap(const char *wordsFileName, const char *codesFileName){
+    FILE* wordsFile = fopen(wordsFileName, "r");
+    FILE* codesFile = fopen(codesFileName, "r");
+
+
+    char words[1024];
+    char codes[1024];
+
+    int count = 1;
+   
+    
+    while (fgets(words, 1024, wordsFile) && fgets(codes, 1024, codesFile)){
+        char *wordsTmp = strdup(words);
+        char *codesTmp = strdup(codes);
+
+        char *wordsTok = wordsTmp, *wordsEnd = wordsTmp;
+        char *codesTok = codesTmp, *codesEnd = codesTmp;
+
+
+        while (wordsTok != NULL && codesTok != NULL) {
+            
+            if((*wordsTok != '\0' && wordsTok != "\n") && ( *codesTok != '\0' && codesTok != "\n")){
+                strsep(&wordsEnd, " \n");
+                strsep(&codesEnd, " \n");
+
+                
+                printf("%d - %s  -----> %s ---> hash %d \n",count, wordsTok, codesTok, hash(codesTok, 20));
+                
+                newWord = createWord(codesTok, wordsTok);
+
+                //printf("WORD STRUCT: %s  -----> %s  \n",newWord->code, newWord->text);
+
+
+                insertWordInList(map[hash(codesTok, 20)], newWord);
+
+
+                wordsTok = wordsEnd;
+                codesTok = codesEnd;
+
+                count++;
+            }
+        }
+        
+        
+        
+
+       
+        free(wordsTmp);
+        free(codesTmp);
+        count++; // and delete this too at your own risk
+    }
+
+    
+
+    fclose(wordsFile); 
+    fclose(codesFile);
 }
 
 
 
-
 int main(){
+
     //fileWordsToKeys("lusiadasClean.txt");
-    countWords("test.txt");
+    //countWords("words/test.txt");
+    for(int i =0; i<20; i++){
+        map[i] = createList();
+    }
+
+    printf("\n\n");
+
+    
+
+
+    generateMap("words/test.txt","words/testCodes.txt");
 
     return 0;
 }

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <hashtable.c>
+#include "hashtable.c"
+#include "parser.c"
 
 const int m=20;
 int nWords=0;
@@ -19,6 +20,8 @@ void initMap(){
 
 int main(){
 
+
+    initMap();
 
 
 
