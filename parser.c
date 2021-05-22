@@ -6,6 +6,8 @@
 #include <locale.h>
 #include "hashtable.h"
 #include "hashtable.c"
+#include <unistd.h>
+
 
 #define m 20
 
@@ -34,7 +36,7 @@ void fileWordsToKeys(const char *filename){
             
         }else{
             i = 0;
-            while (line[i] != '\0') {       
+            while ((int)line[i] != '\0') {       
                 
                 if(isdigit(line[i]) != 0){
                 }else{
@@ -57,9 +59,9 @@ void fileWordsToKeys(const char *filename){
                         fprintf(codedFile,"8");
                     }if(lowerChar >= 119 && lowerChar <=122){
                         fprintf(codedFile,"9");
-                    }
-                    if(isspace(line[i]) != 0)
+                    }else if(isspace(line[i]) != 0 || (lowerChar < 97 && lowerChar > 122)){
                         fprintf(codedFile," ");
+                    }
 
                 }
                 
@@ -147,8 +149,8 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
     FILE* codesFile = fopen(codesFileName, "r");
 
 
-    char words[1024];
-    char codes[1024];
+    char *words = (char *)malloc(254*sizeof(char));
+    char *codes = (char *)malloc(254*sizeof(char)); 
 
     int count = 1;
    
@@ -161,24 +163,44 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
         char *codesTok = codesTmp, *codesEnd = codesTmp;
 
 
-        while (wordsTok != NULL && codesTok != NULL) {
+        while ((wordsTok != NULL && *wordsTok != '\0') && (*codesTok != '\0' && codesTok != NULL)) {
             
-            if((*wordsTok != '\0' && wordsTok != "\n") && ( *codesTok != '\0' && codesTok != "\n")){
-                strsep(&wordsEnd, " \n");
-                strsep(&codesEnd, " \n");
+            //printf("%d --> word: %s code: %s", count, wordsTok, codesTok);
+
+
+            
+            if((strcmp(wordsTok,"\n") != 0) && (strcmp(codesTok,"\n") != 0)){
+                strsep(&wordsEnd, " ");
+                strsep(&codesEnd, " ");
 
                 
-                printf("%d - %s  -----> %s ---> hash %d \n",count, wordsTok, codesTok, hash(codesTok, 20));
-                
-                newWord = createWord(codesTok, wordsTok);
+                if((strchr(wordsTok,'\n') != NULL && strlen(wordsTok) == 2) || (strchr(codesTok,'\n') != NULL && strlen(codesTok) == 2)){
+                   printf("paragraph\n");
+                }else{
+                    
+                    if(strchr(wordsTok,'\n') != NULL){
+                        wordsTok[strcspn(wordsTok, "\n")] = 0;
+                    }
+                    if(strchr(codesTok,'\n') != NULL){
+                        codesTok[strcspn(codesTok, "\n")] = 0;
+                    }
+
+                    //printf("%d - %s -----> %s\n",count, wordsTok, codesTok);
+
+                    newWord = createWord(strdup(codesTok), strdup(wordsTok));
+                    //printf("WORD STRUCT: %s --> %s --> %d \n",newWord->code, newWord->text, hash(codesTok, 20));
+                    // printf("%d ---> ", hash(codesTok, m));
+                    // printf("%s\n", codesTok);
+                    // printf("%s\n", newWord->text);
+                    
+                    insertWordInList(map[hash(codesTok, m)], newWord);
+
+                    printWordList(map[hash(codesTok, m)]);
+                    printf("HAHS: %d\n", hash(codesTok, m));
 
 
-                //printf("WORD STRUCT: %s  -----> %s -> %d \n",newWord->code, newWord->text);
 
-
-                insertWordInList(map[hash(codesTok, 20)], newWord);
-
-                printWordList(map[hash(codesTok, 20)]);
+                }
 
 
                 wordsTok = wordsEnd;
@@ -187,17 +209,11 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                 count++;
             }
         }
-        
-        
-        
-
-       
+               
         free(wordsTmp);
         free(codesTmp);
         count++; // and delete this too at your own risk
     }
-
-    
 
     fclose(wordsFile); 
     fclose(codesFile);
@@ -207,7 +223,7 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
 
 int main(){
 
-    //fileWordsToKeys("lusiadasClean.txt");
+    //fileWordsToKeys("words/lusiadasCleanToCode.txt");
     //countWords("words/test.txt");
     for(int i =0; i<20; i++){
         map[i] = createList();

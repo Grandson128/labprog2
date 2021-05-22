@@ -72,7 +72,6 @@ void deleteWord(List list, char *text){
         free(current);
         return;
     }else{
-
         while ((current) != NULL && strcmp(current->word->text, text) != 0 ){
             previous = current;
             current = (current)->next;
@@ -119,30 +118,29 @@ void insertWordInList (List list, Word *word){
 
     }else{
 
-        new->word->occurrences = aux->occurrences + 1;
-        new->word->code = word->code;
-        new->word->text = word->text;
-        
+        word->occurrences = aux->occurrences;
         deleteWord(list, aux->text); //remove word with old occurrences 
 
+        insertWordInList(list, word);
+
         /*add word with new occurrences*/
-        if(current == NULL){
-            new->next = current;
-            previous->next = new;
-        }else if(current != NULL && current->word->code!=NULL){
+        // if(current == NULL){
+        //     new->next = current;
+        //     previous->next = new;
+        // }else if(current != NULL && current->word->code!=NULL){
             
-            while (list->word->occurrences < current->word->occurrences && current->next!=NULL){
-                previous = current;
-                current = current->next;
-            }
-            if(list->word->occurrences > current->word->occurrences){
-                previous->next = new;
-                new->next = current;
-            }else if(list->word->occurrences < current->word->occurrences){
-                new->next = current->next;
-                current->next = new;
-            }
-        }
+        //     while (list->word->occurrences < current->word->occurrences && current->next!=NULL){
+        //         previous = current;
+        //         current = current->next;
+        //     }
+        //     if(list->word->occurrences > current->word->occurrences){
+        //         previous->next = new;
+        //         new->next = current;
+        //     }else if(list->word->occurrences < current->word->occurrences){
+        //         new->next = current->next;
+        //         current->next = new;
+        //     }
+        // }
     }
 }
 
@@ -157,25 +155,40 @@ void printWordList(List list){
     }
 
     while (aux != NULL && aux->word != NULL){
-        printf("--- Occurrences:%d ---> Key:%s ---> Text:%s ---\n", aux->word->occurrences, aux->word->code, aux->word->text);
+        printf("Occurrences:%d\n", aux->word->occurrences);
+        printf("Key:%s\n", aux->word->code);
+        printf("Text:%s\n", aux->word->text);
+        
+        
         aux = aux->next;
     }
 }
 
 
 
-int hash(char *v, int m){
+// int hash(char *v, int mNumber){
+//     int i, h=v[0];
+    
+//     for(i=0;v[i] != '\0'; i++){
+//         h = (h * 7 + v[i]) % mNumber;
+//     }
+//     return h;
+// }
+
+
+
+int hash(char *v, int mNumber){
     int i, h=v[0];
 
-    for(i=0;v[i] != '\0'; i++){
-        h = (h * 7 + v[i]) % m;
+    for(i=0;i<=5; i++){
+        if(v[i] != '\0'){
+            h = (h * 7 + v[i]) % mNumber;
+        }else{
+            break;
+        }
     }
     return h;
 }
-
-
-
-
 
 
 
