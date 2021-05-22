@@ -24,6 +24,7 @@ GtkWidget *buttonDelete;
 GTimeZone *utc;
 long last_click;
 int count_click;
+int flag = -1;
 GString str;
 int clickCount=0;
 
@@ -40,7 +41,7 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 1) {
         str2=".";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -60,6 +61,7 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
         }
     }
     last_click = now;
+    flag = 1;
 }
 
 void button2_clicked(GtkWidget *widget, gpointer data){
@@ -74,7 +76,7 @@ void button2_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 2) {
         str2="a";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -94,6 +96,7 @@ void button2_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 2;
 }
 
 void button3_clicked(GtkWidget *widget, gpointer data){
@@ -108,7 +111,7 @@ void button3_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 3) {
         str2="d";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -128,6 +131,7 @@ void button3_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 3;
 }
 
 void button4_clicked(GtkWidget *widget, gpointer data){
@@ -142,7 +146,7 @@ void button4_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 4) {
         str2="g";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -162,6 +166,7 @@ void button4_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 4;
 }
 
 void button5_clicked(GtkWidget *widget, gpointer data){
@@ -176,7 +181,7 @@ void button5_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 5) {
         str2="j";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -196,6 +201,7 @@ void button5_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 5;
 }
 
 void button6_clicked(GtkWidget *widget, gpointer data){
@@ -210,7 +216,7 @@ void button6_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 6) {
         str2="m";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -230,6 +236,7 @@ void button6_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 6;
 }
 
 void button7_clicked(GtkWidget *widget, gpointer data){
@@ -244,7 +251,7 @@ void button7_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 7) {
         str2="p";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -268,6 +275,7 @@ void button7_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 7;
 }
 
 void button8_clicked(GtkWidget *widget, gpointer data){
@@ -282,7 +290,7 @@ void button8_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 8) {
         str2="t";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -302,6 +310,7 @@ void button8_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 8;
 }
 
 void button9_clicked(GtkWidget *widget, gpointer data){
@@ -316,7 +325,7 @@ void button9_clicked(GtkWidget *widget, gpointer data){
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
-    if((now-last_click) > 900000) {
+    if((now-last_click) > 900000 || flag != 9) {
         str2="w";
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
@@ -340,6 +349,7 @@ void button9_clicked(GtkWidget *widget, gpointer data){
         }
     }
     last_click = now;
+    flag = 9;
 }
 
 void buttonNext_clicked(GtkWidget *widget, gpointer data){
@@ -351,6 +361,8 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
     strcat(str1,str2);
 
     gtk_label_set_text((GtkLabel*)label,str1);
+
+    flag = -1;
 }
 
 void button0_clicked(GtkWidget *widget, gpointer data){
@@ -362,6 +374,8 @@ void button0_clicked(GtkWidget *widget, gpointer data){
     strcat(str1,str2);
 
     gtk_label_set_text((GtkLabel*)label,str1);
+
+    flag = -1;
 }
 
 //eliminar ultimo char
@@ -372,6 +386,8 @@ void buttonDelete_clicked(GtkWidget *widget, gpointer data){
     str[strlen(str)-1] = '\0';
 
     gtk_label_set_text((GtkLabel*)label,str);
+
+    flag = -1;
 }
 
 static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
@@ -424,7 +440,7 @@ int main(int argc, char* argv[]) {
     vbox= gtk_box_new(GTK_ORIENTATION_VERTICAL, 1);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    label=gtk_label_new("YOUR TEXT HERE");
+    label=gtk_label_new("");
 
     last_click = 0;
 
