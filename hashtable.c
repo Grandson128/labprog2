@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "hashtable.h"
 
+int MAX_SIZE=254;
+
 List createList(){
     List aux;
     aux = (List)malloc(sizeof(Node));
@@ -22,8 +24,12 @@ List createList(){
 Word *createWord(char *wordCode, char *wordText){
     Word *new = (Word *)malloc(sizeof(Word));
 
+    new->code = (char *)malloc(MAX_SIZE*sizeof(char)); 
     new->code = wordCode;
+
+    new->text = (char *)malloc(MAX_SIZE*sizeof(char)); 
     new->text = wordText;
+
     new->occurrences = 0;
 
     return new;
@@ -33,29 +39,25 @@ Word *searchList(List list, char *text){
     int occurrences;
     List previous = list;
     List current = list->next;
-    printf("\n\n  track 2  \n\n");
 
     if(current != NULL){
-        while ((current) != NULL && strcmp(current->word->text, text) != 0 ){
-            previous = current;
-            current = (current)->next;
-        }
+        if(current->word != NULL){
+            while ((current) != NULL && strcmp(current->word->text, text) != 0 ){
+                previous = current;
+                current = (current)->next;
+            }
 
-        if ((current) != NULL && current->word != NULL && strcmp(current->word->text, text) != 0 ){
-            current = NULL;
-            /* Se elemento não encontrado*/
-            return NULL;
+            if ((current) != NULL && current->word != NULL && strcmp(current->word->text, text) != 0 ){
+                current = NULL;
+                /* Se elemento não encontrado*/
+                return NULL;
+            }
         }
 
     }else{
-        printf("\n\n  track 2.1  \n\n");
         return NULL;
 
     }
-
-    
-
-    
 
     return current->word;
 }
@@ -91,13 +93,9 @@ void insertWordInList (List list, Word *word){
     List current = list->next;
     List new = (List)malloc(sizeof(Node));
 
-    printf("\n\n  track 1  \n\n");
-
     Word *aux = searchList(list, word->text);
     
-
     if(aux == NULL){
-    printf("\n\n  track 1.2  \n\n");
         new->word = word;
         new->word->occurrences += 1;
 

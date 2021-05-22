@@ -114,12 +114,14 @@ void countWords(const char *filename){
         }else{
             while (tok != NULL && *tok != '\0' && tok != "\n") {
                 strsep(&end, " \n");
-                stringLower(tok);
+                //stringLower(tok);
 
                 //printf("nWords: %d  Occurrences: %d   Key: %d  Text: %s\n",nWords, new.occurrences, new.key, new.text);
                 //printf("õ ---> %d", 'õ');
-                printf("%d - %s\n",count, tok);
+                //tok[strcspn(tok, "\n")] = 0;
+                printf("%d - %s \n",count, tok);
                 
+
 
 
                 tok = end;
@@ -131,7 +133,7 @@ void countWords(const char *filename){
 
        
         free(tmp);
-        count++; // and delete this too at your own risk
+        
     }
 
     
@@ -170,10 +172,13 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                 
                 newWord = createWord(codesTok, wordsTok);
 
-                //printf("WORD STRUCT: %s  -----> %s  \n",newWord->code, newWord->text);
+
+                //printf("WORD STRUCT: %s  -----> %s -> %d \n",newWord->code, newWord->text);
 
 
                 insertWordInList(map[hash(codesTok, 20)], newWord);
+
+                printWordList(map[hash(codesTok, 20)]);
 
 
                 wordsTok = wordsEnd;
@@ -208,7 +213,7 @@ int main(){
         map[i] = createList();
     }
 
-    printf("\n\n");
+    //printf("\n\n");
 
     
 

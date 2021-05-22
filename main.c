@@ -5,7 +5,7 @@
 #include "hashtable.c"
 #include "parser.c"
 
-const int m=20;
+//const int m=20;
 int nWords=0;
 List map[m];
 
