@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 
-#define m 20
+#define m 6449
 
 Word *newWord;
 
@@ -82,10 +82,7 @@ void stringLower(char *str){
     }
 }
 
-/**
- * 
- * TODO: Populate hashtable
-*/
+
 void countWords(const char *filename){
     FILE* file = fopen(filename, "r");
     int count = 1;
@@ -167,15 +164,12 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
             
             //printf("%d --> word: %s code: %s", count, wordsTok, codesTok);
 
-
-            
             if((strcmp(wordsTok,"\n") != 0) && (strcmp(codesTok,"\n") != 0)){
-                strsep(&wordsEnd, " ");
-                strsep(&codesEnd, " ");
+                strsep(&wordsEnd, ";");
+                strsep(&codesEnd, ";");
 
-                
-                if((strchr(wordsTok,'\n') != NULL && strlen(wordsTok) == 2) || (strchr(codesTok,'\n') != NULL && strlen(codesTok) == 2)){
-                   printf("paragraph\n");
+                if((strchr(wordsTok,'\n') != NULL && strlen(wordsTok) == 2) || (strchr(wordsTok,';') != NULL && strlen(wordsTok) == 1) || (strchr(codesTok,'\n') != NULL && strlen(codesTok) == 2) || (strchr(codesTok,';') != NULL && strlen(codesTok) == 1) || strlen(wordsTok) == 0 || strlen(codesTok) == 0){
+                   //printf("ignore\n");
                 }else{
                     
                     if(strchr(wordsTok,'\n') != NULL){
@@ -192,13 +186,9 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                     // printf("%d ---> ", hash(codesTok, m));
                     // printf("%s\n", codesTok);
                     // printf("%s\n", newWord->text);
+                    //printf("%d -> HASH: %d -> %s\n", count, hash(codesTok, m), wordsTok);
                     
                     insertWordInList(map[hash(codesTok, m)], newWord);
-
-                    printWordList(map[hash(codesTok, m)]);
-                    printf("HAHS: %d\n", hash(codesTok, m));
-
-
 
                 }
 
@@ -225,16 +215,16 @@ int main(){
 
     //fileWordsToKeys("words/lusiadasCleanToCode.txt");
     //countWords("words/test.txt");
-    for(int i =0; i<20; i++){
+    for(int i =0; i<m; i++){
         map[i] = createList();
     }
 
-    //printf("\n\n");
+    generateMap("words/bigWords.txt","words/bigCodes.txt");
 
-    
-
-
-    generateMap("words/test.txt","words/testCodes.txt");
+    printf("\n\n");
+    for(int i =0; i<m; i++){
+        printWordList(map[i]);
+    }
 
     return 0;
 }
