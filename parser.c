@@ -8,12 +8,18 @@
 #include "hashtable.c"
 #include <unistd.h>
 
-
-#define m 6449
+/*
+we calculated approximately 10330 words
+10330/10 = 1033
+10330/5 = 2066
+avg=1549.5  
+1549 is a prime number so we choose it
+*/
+#define m 1549
 
 Word *newWord;
-
-int nWords=0;
+int auxMap[m];
+//int nWords=0;
 List map[m];
 List test;
 
@@ -187,7 +193,7 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                     // printf("%s\n", codesTok);
                     // printf("%s\n", newWord->text);
                     //printf("%d -> HASH: %d -> %s\n", count, hash(codesTok, m), wordsTok);
-                    
+                    auxMap[hash(codesTok, m)] = 1;
                     insertWordInList(map[hash(codesTok, m)], newWord);
 
                 }
@@ -212,11 +218,15 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
 
 
 int main(){
-
+    int count=0;
     //fileWordsToKeys("words/lusiadasCleanToCode.txt");
     //countWords("words/test.txt");
     for(int i =0; i<m; i++){
         map[i] = createList();
+    }
+
+    for(int i =0; i<m; i++){
+        auxMap[i] = 0;
     }
 
     generateMap("words/bigWords.txt","words/bigCodes.txt");
@@ -225,6 +235,27 @@ int main(){
     for(int i =0; i<m; i++){
         printWordList(map[i]);
     }
+
+    for(int i =0; i<m; i++){
+
+        List aux = createList();
+
+        if(map[i]->next != NULL){
+            aux = map[i]->next;
+        }else{
+            //printf("Empty list\n");
+        }
+
+        while (aux != NULL && aux->word != NULL){
+            count++;
+            aux = aux->next;
+        }
+
+    }
+
+
+    printf("\n\n Words: %d\n", nWords);
+    printf("\n\n Unique Words: %d\n", count);
 
     return 0;
 }

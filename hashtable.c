@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 int MAX_SIZE=254;
-
+int nWords=0;
 List createList(){
     List aux;
     aux = (List)malloc(sizeof(Node));
@@ -184,6 +184,7 @@ void printWordList(List list){
         printf("Key:%s\n", aux->word->code);
         printf("Text:%s\n", aux->word->text);
         printf("Text Length: %ld\n", strlen(aux->word->text));
+        nWords += aux->word->occurrences;
         printf("\n");
         
         aux = aux->next;
