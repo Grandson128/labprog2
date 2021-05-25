@@ -6,7 +6,8 @@
 #include <unistd.h>
 
 int MAX_SIZE=254;
-int nWords=0;
+//int nWords=0;
+
 List createList(){
     List aux;
     aux = (List)malloc(sizeof(Node));
@@ -20,7 +21,6 @@ List createList(){
     }
     return aux;
 }
-
 
 Word *createWord(char *wordCode, char *wordText){
     Word *new = (Word *)malloc(sizeof(Word));
@@ -110,9 +110,6 @@ void insertWordInList (List list, Word *word){
     Word *aux = searchList(list, word->text);
     
     if(aux == NULL){
-        //printf("\n%s --> %d\n", word->text, word->occurrences);
-        //printf("\nSEARCHED: %s --> %d\n", aux->text, aux->occurrences);
-        //printf("ARGUMENT: %s --> %d\n", word->text, word->occurrences);
         if(word != NULL){
             new->word = word;
             new->word->occurrences += 1;
@@ -141,34 +138,19 @@ void insertWordInList (List list, Word *word){
 
     }else{
         word->occurrences = aux->occurrences;
-
-        //printf("\nSEARCHED: %s --> %d\n", aux->text, aux->occurrences);
-        //printf("\nARGUMENT: %s --> %d\n", word->text, word->occurrences);
         deleteWord(list, aux->text); //remove word with old occurrences 
-
         insertWordInList(list, word);
-
-        /*add word with new occurrences*/
-        // if(current == NULL){
-        //     new->next = current;
-        //     previous->next = new;
-        // }else if(current != NULL && current->word->code!=NULL){
-            
-        //     while (list->word->occurrences < current->word->occurrences && current->next!=NULL){
-        //         previous = current;
-        //         current = current->next;
-        //     }
-        //     if(list->word->occurrences > current->word->occurrences){
-        //         previous->next = new;
-        //         new->next = current;
-        //     }else if(list->word->occurrences < current->word->occurrences){
-        //         new->next = current->next;
-        //         current->next = new;
-        //     }
-        // }
     }
 }
 
+// int hash(char *v, int mNumber){
+//     int i, h=v[0];
+    
+//     for(i=0;v[i] != '\0'; i++){
+//         h = (h * 7 + v[i]) % mNumber;
+//     }
+//     return h;
+// }
 
 void printWordList(List list){
     List aux = createList();
@@ -184,23 +166,13 @@ void printWordList(List list){
         printf("Key:%s\n", aux->word->code);
         printf("Text:%s\n", aux->word->text);
         printf("Text Length: %ld\n", strlen(aux->word->text));
-        nWords += aux->word->occurrences;
-        printf("\n");
-        
+        //nWords += aux->word->occurrences;
+        //printf("%s | ", aux->word->text);
+        //printf("%d | ", hash(aux->word->code, 2066));
         aux = aux->next;
     }
+    printf("\n");
 }
-
-
-
-// int hash(char *v, int mNumber){
-//     int i, h=v[0];
-    
-//     for(i=0;v[i] != '\0'; i++){
-//         h = (h * 7 + v[i]) % mNumber;
-//     }
-//     return h;
-// }
 
 
 
@@ -216,15 +188,4 @@ int hash(char *v, int mNumber){
     }
     return h;
 }
-
-
-
-
-void printMap(){
-
-    // for(int i=0; i<nWords;i++){
-    //     //printf("Occurrences: %d   Key: %d  Text: %s\n", table[i]->occurrences, table[i]->key, table[i]->text);
-    // }
-}
-
 

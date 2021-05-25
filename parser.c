@@ -4,8 +4,6 @@
 #include <ctype.h>
 #include <wchar.h>
 #include <locale.h>
-#include "hashtable.h"
-#include "hashtable.c"
 #include <unistd.h>
 
 /*
@@ -15,13 +13,11 @@ we calculated approximately 10330 words
 avg=1549.5  
 1549 is a prime number so we choose it
 */
-#define m 1549
+// #define m 1549
 
-Word *newWord;
-int auxMap[m];
-//int nWords=0;
-List map[m];
-List test;
+// Word *newWord;
+// List map[m];
+// List test;
 
 
 
@@ -31,7 +27,7 @@ void fileWordsToKeys(const char *filename){
     FILE* file = fopen(filename, "r");
     FILE* codedFile = fopen("lusiadasCodes.txt", "a");
     int count = 1;
-    char *line = (char *)malloc(50*sizeof(char));;
+    char *line = (char *)malloc(50*sizeof(char));
     int i;
     char lowerChar;
 
@@ -96,53 +92,22 @@ void countWords(const char *filename){
 
     char line[1024];
     
-
     while (fgets(line, 1024, file)){
         char *tmp = strdup(line);
         char *tok = tmp, *end = tmp;
         i=0;
-        /*
-        debugging char by char int value
-        while (line[i] != '\0') {       
-                if(isdigit(line[i]) != 0){
-                }else{
-                    printf("õ ---> %d", 'õ');
-                    printf("%d - %d\n",count, line[i]);
-                }
-                i++;
-        }
-        */
-
-
         if(isdigit(*tok) != 0){
 
         }else{
             while (tok != NULL && *tok != '\0' && tok != "\n") {
                 strsep(&end, " \n");
-                //stringLower(tok);
-
-                //printf("nWords: %d  Occurrences: %d   Key: %d  Text: %s\n",nWords, new.occurrences, new.key, new.text);
-                //printf("õ ---> %d", 'õ');
-                //tok[strcspn(tok, "\n")] = 0;
                 printf("%d - %s \n",count, tok);
-                
-
-
-
                 tok = end;
                 count++;
             }
-        
-        
         }
-
-       
         free(tmp);
-        
     }
-
-    
-
     fclose(file); 
 }
 
@@ -168,8 +133,6 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
 
         while ((wordsTok != NULL && *wordsTok != '\0') && (*codesTok != '\0' && codesTok != NULL)) {
             
-            //printf("%d --> word: %s code: %s", count, wordsTok, codesTok);
-
             if((strcmp(wordsTok,"\n") != 0) && (strcmp(codesTok,"\n") != 0)){
                 strsep(&wordsEnd, ";");
                 strsep(&codesEnd, ";");
@@ -184,24 +147,12 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                     if(strchr(codesTok,'\n') != NULL){
                         codesTok[strcspn(codesTok, "\n")] = 0;
                     }
-
-                    //printf("%d - %s -----> %s\n",count, wordsTok, codesTok);
-
                     newWord = createWord(strdup(codesTok), strdup(wordsTok));
-                    //printf("WORD STRUCT: %s --> %s --> %d \n",newWord->code, newWord->text, hash(codesTok, 20));
-                    // printf("%d ---> ", hash(codesTok, m));
-                    // printf("%s\n", codesTok);
-                    // printf("%s\n", newWord->text);
-                    //printf("%d -> HASH: %d -> %s\n", count, hash(codesTok, m), wordsTok);
-                    auxMap[hash(codesTok, m)] = 1;
                     insertWordInList(map[hash(codesTok, m)], newWord);
-
                 }
-
 
                 wordsTok = wordsEnd;
                 codesTok = codesEnd;
-
                 count++;
             }
         }
@@ -217,45 +168,41 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
 
 
 
-int main(){
-    int count=0;
-    //fileWordsToKeys("words/lusiadasCleanToCode.txt");
-    //countWords("words/test.txt");
-    for(int i =0; i<m; i++){
-        map[i] = createList();
-    }
+// int main(){
+//     int count=0;
+//     //fileWordsToKeys("words/lusiadasCleanToCode.txt");
+//     //countWords("words/test.txt");
+//     for(int i =0; i<m; i++){
+//         map[i] = createList();
+//     }
 
-    for(int i =0; i<m; i++){
-        auxMap[i] = 0;
-    }
+//     generateMap("words/bigWords.txt","words/bigCodes.txt");
 
-    generateMap("words/bigWords.txt","words/bigCodes.txt");
+//     printf("\n\n");
+//     for(int i =0; i<m; i++){
+//         printWordList(map[i]);
+//     }
 
-    printf("\n\n");
-    for(int i =0; i<m; i++){
-        printWordList(map[i]);
-    }
+//     // for(int i =0; i<m; i++){
 
-    for(int i =0; i<m; i++){
+//     //     List aux = createList();
 
-        List aux = createList();
+//     //     if(map[i]->next != NULL){
+//     //         aux = map[i]->next;
+//     //     }else{
+//     //         //printf("Empty list\n");
+//     //     }
 
-        if(map[i]->next != NULL){
-            aux = map[i]->next;
-        }else{
-            //printf("Empty list\n");
-        }
+//     //     while (aux != NULL && aux->word != NULL){
+//     //         count++;
+//     //         aux = aux->next;
+//     //     }
 
-        while (aux != NULL && aux->word != NULL){
-            count++;
-            aux = aux->next;
-        }
-
-    }
+//     // }
 
 
-    printf("\n\n Words: %d\n", nWords);
-    printf("\n\n Unique Words: %d\n", count);
+//     // printf("\n\n Words: %d\n", nWords);
+//     // printf("\n\n Unique Words: %d\n", count);
 
-    return 0;
-}
+//     return 0;
+// }
