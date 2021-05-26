@@ -39,11 +39,15 @@ GtkWidget *buttonDelete;
 GTimeZone *utc;
 long last_click;
 int count_click;
-int flag = -1;
+int flag = -9;
 GString str;
 int clickCount=0;
 
 int t9Active;
+
+List handleNext;
+List handleNextRoot;
+
 
 
 void printRecomendedWords(void){
@@ -468,16 +472,39 @@ void button9_clicked(GtkWidget *widget, gpointer data){
 }
 
 void buttonNext_clicked(GtkWidget *widget, gpointer data){
+    //gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
+    //gchar *str2 = " ";
+    //strcat(str1,str2);
+    //gtk_label_set_text((GtkLabel*)label,str1);
+    
 
-    gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
+    if (flag != -1 && strlen(labelCode) > 0){
+        if(map[hash(labelCode, m)]->next != NULL){
+            handleNextRoot = map[hash(labelCode, m)]->next;
+            handleNext = handleNextRoot;
+            if(strlen(labelCode) <= strlen(handleNext->word->code))
+                printf("SLECTION -> %s\n", handleNext->word->text);
+        }
 
-    gchar *str2 = " ";
 
-    strcat(str1,str2);
+    }else{
 
-    gtk_label_set_text((GtkLabel*)label,str1);
+        if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
+            handleNext = handleNext->next;
+            if(strlen(labelCode) <= strlen(handleNext->word->code))
+                printf("SLECTION -> %s\n", handleNext->word->text);
+
+        }else if(strlen(labelCode) > 0){
+            handleNext = handleNextRoot;
+            if(strlen(labelCode) <= strlen(handleNext->word->code))
+                printf("SLECTION -> %s\n", handleNext->word->text);
+        }
+
+    }
+    
 
     flag = -1;
+
 }
 
 void button0_clicked(GtkWidget *widget, gpointer data){
@@ -496,7 +523,7 @@ void button0_clicked(GtkWidget *widget, gpointer data){
         
     }
 
-    flag = -1;
+    flag = -2;
 
 
 
@@ -513,7 +540,7 @@ void buttonDelete_clicked(GtkWidget *widget, gpointer data){
 
     str[strlen(str)-1] = '\0';
     gtk_label_set_text((GtkLabel*)label,str);
-    flag = -1;
+    flag = -3;
 }
 
 static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
