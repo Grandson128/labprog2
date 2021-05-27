@@ -43,13 +43,31 @@ int count_click;
 int flag = -9;
 GString str;
 int clickCount=0;
-
 int t9Active;
 
 List handleNext;
 List handleNextRoot;
 
+char *lastInsertedWord;
 
+void saveWordInFiles(void){
+
+    FILE* codedFile = fopen("words/bigCodes.txt", "a");
+    FILE* wordsFile = fopen("words/bigWords.txt", "a");
+
+    if(codedFile == NULL){
+        printf("\nCannot open codes");
+    }else if(wordsFile == NULL){
+        printf("\nCannot open words");
+    }
+
+
+    fprintf(codedFile, "\n%s;", labelCode);
+    fprintf(wordsFile, "\n%s;", lastInsertedWord);
+
+    fclose(codedFile);
+    fclose(wordsFile);
+}
 
 void printRecomendedWords(void){
     List aux = createList();
@@ -61,12 +79,13 @@ void printRecomendedWords(void){
     }
 
     while (aux != NULL && aux->word != NULL){
-        if(strlen(labelCode) <= strlen(aux->word->code))
-            printf("%s |", aux->word->text);
-        
+        if(strlen(labelCode) <= strlen(aux->word->code)){
+            //printf("%s |", aux->word->text);
+            gtk_label_set_text((GtkLabel*)label2,aux->word->text);
+        }
         aux = aux->next;
     }
-    printf("\n");
+    //printf("\n");
 
 
 }
@@ -91,8 +110,21 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
 
     }else{
 
-        if((now-last_click) > 900000 || flag != 1) {
+        if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+
+            printf("%s --> %s\n", labelCode, lastInsertedWord);
+            //insertWord
+            newWord = createWord(strdup(labelCode), strdup(lastInsertedWord));
+            insertWordInList(map[hash(labelCode, m)], newWord);
+            saveWordInFiles();
+            labelCode[0] = '\0';
+            lastInsertedWord[0] = '\0';
+        }
+
         
+        
+
+        if((now-last_click) > 900000 || flag != 1) {
             str2=".";
             strcat(str1,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
@@ -142,19 +174,24 @@ void button2_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 2) {
             str2="a";
             strcat(str1,str2);
+            strcat(labelCode, "2");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'a'){
                 str1[strlen(str1)-1] = 'b';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'b';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'b'){
                 str1[strlen(str1)-1] = 'c';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'c';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'c'){
                 str1[strlen(str1)-1] = 'a';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'a';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -186,19 +223,24 @@ void button3_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 3) {
             str2="d";
             strcat(str1,str2);
+            strcat(labelCode, "3");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'd'){
                 str1[strlen(str1)-1] = 'e';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'e';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'e'){
                 str1[strlen(str1)-1] = 'f';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'f';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'f'){
                 str1[strlen(str1)-1] = 'd';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'd';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -228,19 +270,24 @@ void button4_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 4) {
             str2="g";
             strcat(str1,str2);
+            strcat(labelCode, "4");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'g'){
                 str1[strlen(str1)-1] = 'h';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'h';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'h'){
                 str1[strlen(str1)-1] = 'i';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'i';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'i'){
                 str1[strlen(str1)-1] = 'g';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'g';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -270,19 +317,24 @@ void button5_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 5) {
             str2="j";
             strcat(str1,str2);
+            strcat(labelCode, "5");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'j'){
                 str1[strlen(str1)-1] = 'k';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'k';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'k'){
                 str1[strlen(str1)-1] = 'l';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'l';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'l'){
                 str1[strlen(str1)-1] = 'j';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'j';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -313,19 +365,24 @@ void button6_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 6) {
             str2="m";
             strcat(str1,str2);
+            strcat(labelCode, "6");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'm'){
                 str1[strlen(str1)-1] = 'n';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'n';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'n'){
                 str1[strlen(str1)-1] = 'o';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'o';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'o'){
                 str1[strlen(str1)-1] = 'm';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'm';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -356,23 +413,29 @@ void button7_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 7) {
             str2="p";
             strcat(str1,str2);
+            strcat(labelCode, "7");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'p'){
                 str1[strlen(str1)-1] = 'q';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'q';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'q'){
                 str1[strlen(str1)-1] = 'r';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'r';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'r'){
                 str1[strlen(str1)-1] = 's';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 's';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 's'){
                 str1[strlen(str1)-1] = 'p';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'p';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -403,19 +466,24 @@ void button8_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 8) {
             str2="t";
             strcat(str1,str2);
+            strcat(labelCode, "8");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 't'){
                 str1[strlen(str1)-1] = 'u';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'u';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'u'){
                 str1[strlen(str1)-1] = 'v';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'v';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'v'){
                 str1[strlen(str1)-1] = 't';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 't';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -446,23 +514,29 @@ void button9_clicked(GtkWidget *widget, gpointer data){
         if((now-last_click) > 900000 || flag != 9) {
             str2="w";
             strcat(str1,str2);
+            strcat(labelCode, "9");
+            strcat(lastInsertedWord,str2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         else {
             if(last_char == 'w'){
                 str1[strlen(str1)-1] = 'y';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'y';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'y'){
                 str1[strlen(str1)-1] = 'x';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'x';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'x'){
                 str1[strlen(str1)-1] = 'z';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'z';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
             else if(last_char == 'z'){
                 str1[strlen(str1)-1] = 'w';
+                lastInsertedWord[strlen(lastInsertedWord)-1] = 'y';
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
@@ -484,7 +558,7 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
             handleNextRoot = map[hash(labelCode, m)]->next;
             handleNext = handleNextRoot;
             if(strlen(labelCode) <= strlen(handleNext->word->code)) {
-                printf("SLECTION -> %s\n", handleNext->word->text);
+                //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
         }
@@ -495,14 +569,14 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
         if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
             handleNext = handleNext->next;
             if(strlen(labelCode) <= strlen(handleNext->word->code)){
-                printf("SLECTION -> %s\n", handleNext->word->text);
+                //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
 
         }else if(strlen(labelCode) > 0){
             handleNext = handleNextRoot;
             if(strlen(labelCode) <= strlen(handleNext->word->code)){
-                printf("SLECTION -> %s\n", handleNext->word->text);
+                //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
                 
@@ -516,19 +590,43 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
 }
 
 void button0_clicked(GtkWidget *widget, gpointer data){
-
     gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
-
+    gchar *strLabel2 = (gchar *)gtk_label_get_text((GtkLabel*)label2);
     gchar *str2 = " ";
 
-    strcat(str1,str2);
-
-    gtk_label_set_text((GtkLabel*)label,str1);
+    
 
     if(t9Active == 1){
         labelCode[0] = '\0';
         g_print("%s\n", labelCode);
+
+        if(strLabel2[0] != '\0'){
+            strcat(str1,str2);
+            strcat(str1,strLabel2);
+            gtk_label_set_text((GtkLabel*)label,str1);
+        }
+
+        gtk_label_set_text((GtkLabel*)label2, "");
         
+    }else{
+        strcat(str1,str2);
+        gtk_label_set_text((GtkLabel*)label,str1);
+        
+        if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+
+            printf("%s --> %s\n", labelCode, lastInsertedWord);
+            //insertWord
+            newWord = createWord(strdup(labelCode), strdup(lastInsertedWord));
+            insertWordInList(map[hash(labelCode, m)], newWord);
+            saveWordInFiles();
+            labelCode[0] = '\0';
+            lastInsertedWord[0] = '\0';
+        }
+
+        //insertWord
+
+
+
     }
 
     flag = -2;
@@ -542,8 +640,11 @@ void buttonDelete_clicked(GtkWidget *widget, gpointer data){
 
     gchar *str = (gchar *)gtk_label_get_text((GtkLabel*)label);
 
-    labelCode[strlen(labelCode)-1] = '\0';
-    g_print("%s\n", labelCode);
+    if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+        labelCode[strlen(labelCode)-1] = '\0';
+        lastInsertedWord[strlen(lastInsertedWord)-1] = '\0';
+    }
+
     
 
     str[strlen(str)-1] = '\0';
@@ -557,12 +658,13 @@ static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
     //exemplo para activar e desactivar a smart writing
     if (gtk_toggle_button_get_active (toggle_button)){
         gtk_window_set_title (window, "Smart Writing ON");
-        label2=gtk_label_new("SUGGESTED WORDS HERE");
+        gtk_label_set_text((GtkLabel*)label2,"SUGGESTED WORDS HERE");
+        labelCode[0] = '\0';
         t9Active = 1;
-    }
-    else{
+    }else{
         gtk_window_set_title (window, "Smart Writing OFF");
-        label2=gtk_label_new("");
+        gtk_label_set_text((GtkLabel*)label2,"");
+        labelCode[0] = '\0';
         t9Active = 0;
     }
 
@@ -596,7 +698,9 @@ void initMap(){
 }
 
 void initDictionary(){
+    printf("test 2 \n");
     initMap();
+    printf("test 3 \n");
     generateMap("words/bigWords.txt","words/bigCodes.txt");
 
     /* printf("\n\n"); */
@@ -614,7 +718,10 @@ void initDictionary(){
 
 int main(int argc, char* argv[]) {
     labelCode = (char *)malloc(50*sizeof(char));
-    
+    lastInsertedWord = (char *)malloc(50*sizeof(char));
+
+    printf("test 1 \n");
+
     initDictionary();
     t9Active = 1;
 

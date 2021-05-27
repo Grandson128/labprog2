@@ -116,6 +116,13 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
     FILE* wordsFile = fopen(wordsFileName, "r");
     FILE* codesFile = fopen(codesFileName, "r");
 
+    if(codesFile == NULL){
+        printf("\nCannot open codes");
+    }else if(wordsFile == NULL){
+        printf("\nCannot open words");
+    }
+
+    printf("test 4 \n");
 
     char *words = (char *)malloc(254*sizeof(char));
     char *codes = (char *)malloc(254*sizeof(char)); 
@@ -130,9 +137,14 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
         char *wordsTok = wordsTmp, *wordsEnd = wordsTmp;
         char *codesTok = codesTmp, *codesEnd = codesTmp;
 
-
+        
         while ((wordsTok != NULL && *wordsTok != '\0') && (*codesTok != '\0' && codesTok != NULL)) {
-            
+            /* printf("%d --> %d \n",(int)codesTok, (int)wordsTok);
+            printf("%d\n", count); */
+            /* if((strlen(wordsTok) == 1  || strlen(codesTok) == 1)){
+                //517277398 --> 517274710
+            } */
+
             if((strcmp(wordsTok,"\n") != 0) && (strcmp(codesTok,"\n") != 0)){
                 strsep(&wordsEnd, ";");
                 strsep(&codesEnd, ";");
@@ -154,7 +166,7 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
                 wordsTok = wordsEnd;
                 codesTok = codesEnd;
                 count++;
-            }
+            }else{break;}
         }
                
         free(wordsTmp);
