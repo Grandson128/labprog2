@@ -698,9 +698,7 @@ void initMap(){
 }
 
 void initDictionary(){
-    printf("test 2 \n");
     initMap();
-    printf("test 3 \n");
     generateMap("words/bigWords.txt","words/bigCodes.txt");
 
     /* printf("\n\n"); */
@@ -719,8 +717,6 @@ void initDictionary(){
 int main(int argc, char* argv[]) {
     labelCode = (char *)malloc(50*sizeof(char));
     lastInsertedWord = (char *)malloc(50*sizeof(char));
-
-    printf("test 1 \n");
 
     initDictionary();
     t9Active = 1;

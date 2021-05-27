@@ -122,8 +122,6 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
         printf("\nCannot open words");
     }
 
-    printf("test 4 \n");
-
     char *words = (char *)malloc(254*sizeof(char));
     char *codes = (char *)malloc(254*sizeof(char)); 
 
