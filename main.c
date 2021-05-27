@@ -557,10 +557,12 @@ static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
     //exemplo para activar e desactivar a smart writing
     if (gtk_toggle_button_get_active (toggle_button)){
         gtk_window_set_title (window, "Smart Writing ON");
+        label2=gtk_label_new("SUGGESTED WORDS HERE");
         t9Active = 1;
     }
     else{
         gtk_window_set_title (window, "Smart Writing OFF");
+        label2=gtk_label_new("");
         t9Active = 0;
     }
 
@@ -635,7 +637,7 @@ int main(int argc, char* argv[]) {
     checkbutton=gtk_check_button_new_with_label("Smart writing");
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
 
-    label2=gtk_label_new("TESTE");
+    label2=gtk_label_new("SUGGESTED WORDS HERE");
 
     grid = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(grid),2);
