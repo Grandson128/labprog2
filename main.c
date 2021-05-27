@@ -110,7 +110,7 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
 
     }else{
 
-        if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+        if(labelCode[0] != '\0' && lastInsertedWord[0] != '\0'){
 
             printf("%s --> %s\n", labelCode, lastInsertedWord);
             //insertWord
@@ -594,13 +594,11 @@ void button0_clicked(GtkWidget *widget, gpointer data){
     gchar *strLabel2 = (gchar *)gtk_label_get_text((GtkLabel*)label2);
     gchar *str2 = " ";
 
-    
-
     if(t9Active == 1){
         labelCode[0] = '\0';
         g_print("%s\n", labelCode);
 
-        if(strLabel2[0] != '\0'){
+        if(strLabel2[0] != '\0' && strcmp(strLabel2, "SUGGESTED WORDS HERE") != 0){
             strcat(str1,str2);
             strcat(str1,strLabel2);
             gtk_label_set_text((GtkLabel*)label,str1);
@@ -612,7 +610,7 @@ void button0_clicked(GtkWidget *widget, gpointer data){
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
         
-        if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+        if(labelCode[0] != '\0' && lastInsertedWord[0] != '\0'){
 
             printf("%s --> %s\n", labelCode, lastInsertedWord);
             //insertWord
@@ -622,16 +620,9 @@ void button0_clicked(GtkWidget *widget, gpointer data){
             labelCode[0] = '\0';
             lastInsertedWord[0] = '\0';
         }
-
-        //insertWord
-
-
-
     }
 
     flag = -2;
-
-
 
 }
 
@@ -640,12 +631,10 @@ void buttonDelete_clicked(GtkWidget *widget, gpointer data){
 
     gchar *str = (gchar *)gtk_label_get_text((GtkLabel*)label);
 
-    if(labelCode[0] != '0' && lastInsertedWord[0] != '\0'){
+    if(labelCode[0] != '\0' && lastInsertedWord[0] != '\0'){
         labelCode[strlen(labelCode)-1] = '\0';
         lastInsertedWord[strlen(lastInsertedWord)-1] = '\0';
     }
-
-    
 
     str[strlen(str)-1] = '\0';
     gtk_label_set_text((GtkLabel*)label,str);
@@ -660,11 +649,13 @@ static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
         gtk_window_set_title (window, "Smart Writing ON");
         gtk_label_set_text((GtkLabel*)label2,"SUGGESTED WORDS HERE");
         labelCode[0] = '\0';
+        lastInsertedWord[0] = '\0';
         t9Active = 1;
     }else{
         gtk_window_set_title (window, "Smart Writing OFF");
         gtk_label_set_text((GtkLabel*)label2,"");
         labelCode[0] = '\0';
+        lastInsertedWord[0] = '\0';
         t9Active = 0;
     }
 
@@ -685,10 +676,6 @@ GdkPixbuf *create_pixbuf(const gchar * filename) {
 
     return pixbuf;
 }
-
-
-
-
 
 
 void initMap(){
