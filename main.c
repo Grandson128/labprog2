@@ -21,6 +21,7 @@ GtkWidget *window;
 GtkWidget *vbox;
 GtkWidget *image; //por fazer, tava a pensar num logo da fcup
 GtkWidget *label;
+GtkWidget *label2;
 GtkWidget *checkbutton;
 GtkWidget *sugestoes; //spot para as caixinhas, tira que ser disabled se t9 unchecked
 GtkWidget *grid;
@@ -482,8 +483,10 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
         if(map[hash(labelCode, m)]->next != NULL){
             handleNextRoot = map[hash(labelCode, m)]->next;
             handleNext = handleNextRoot;
-            if(strlen(labelCode) <= strlen(handleNext->word->code))
+            if(strlen(labelCode) <= strlen(handleNext->word->code)) {
                 printf("SLECTION -> %s\n", handleNext->word->text);
+                gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+            }
         }
 
 
@@ -491,13 +494,18 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
 
         if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
             handleNext = handleNext->next;
-            if(strlen(labelCode) <= strlen(handleNext->word->code))
+            if(strlen(labelCode) <= strlen(handleNext->word->code)){
                 printf("SLECTION -> %s\n", handleNext->word->text);
+                gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+            }
 
         }else if(strlen(labelCode) > 0){
             handleNext = handleNextRoot;
-            if(strlen(labelCode) <= strlen(handleNext->word->code))
+            if(strlen(labelCode) <= strlen(handleNext->word->code)){
                 printf("SLECTION -> %s\n", handleNext->word->text);
+                gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+            }
+                
         }
 
     }
@@ -627,6 +635,8 @@ int main(int argc, char* argv[]) {
     checkbutton=gtk_check_button_new_with_label("Smart writing");
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
 
+    label2=gtk_label_new("TESTE");
+
     grid = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(grid),2);
     gtk_grid_set_column_spacing(GTK_GRID(grid),2);
@@ -682,6 +692,7 @@ int main(int argc, char* argv[]) {
 
     gtk_box_pack_start(GTK_BOX(vbox),label,TRUE,TRUE,20);
     gtk_box_pack_start(GTK_BOX(vbox),checkbutton,TRUE,TRUE,20);
+    gtk_box_pack_start(GTK_BOX(vbox),label2,TRUE,TRUE,20);
     gtk_box_pack_start(GTK_BOX(vbox),grid,TRUE,TRUE,20);
 
 
