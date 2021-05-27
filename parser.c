@@ -6,21 +6,11 @@
 #include <locale.h>
 #include <unistd.h>
 
-/*
-we calculated approximately 10330 words
-10330/10 = 1033
-10330/5 = 2066
-avg=1549.5  
-1549 is a prime number so we choose it
+
+/**
+ * Function to convert lusiadasCleanToCode.txt to keypad codes
+ * 
 */
-// #define m 1549
-
-// Word *newWord;
-// List map[m];
-// List test;
-
-
-
 void fileWordsToKeys(const char *filename){
     setlocale(LC_CTYPE,"pt_PT.UTF-8");
 
@@ -78,13 +68,18 @@ void fileWordsToKeys(const char *filename){
     fclose(codedFile);
 }
 
+/**
+ * Convert string to lowercase
+*/
 void stringLower(char *str){
     for (int i = 0; i < strlen(str); ++i) {
         str[i] = tolower((unsigned char) str[i]);
     }
 }
 
-
+/**
+ * test function to iterate over text file
+*/
 void countWords(const char *filename){
     FILE* file = fopen(filename, "r");
     int count = 1;
@@ -111,7 +106,22 @@ void countWords(const char *filename){
     fclose(file); 
 }
 
-
+/**
+ * 
+ * Function that pupulates a hashmap with words
+ * 
+ * @params:
+ * wordsFileName - file name that contais all the words from lusiadas in a CSV style
+ * codesFileName - file name that contais all the codes to the words at wordsFileName
+ * 
+ * for every code in the codesFile
+ * 
+ * a hash from this code is used as the identifier for the hashtable
+ * 
+ * table[hash(code)] = List of words
+ * 
+ * 
+*/
 void generateMap(const char *wordsFileName, const char *codesFileName){
     FILE* wordsFile = fopen(wordsFileName, "r");
     FILE* codesFile = fopen(codesFileName, "r");
@@ -135,14 +145,7 @@ void generateMap(const char *wordsFileName, const char *codesFileName){
         char *wordsTok = wordsTmp, *wordsEnd = wordsTmp;
         char *codesTok = codesTmp, *codesEnd = codesTmp;
 
-        
         while ((wordsTok != NULL && *wordsTok != '\0') && (*codesTok != '\0' && codesTok != NULL)) {
-            /* printf("%d --> %d \n",(int)codesTok, (int)wordsTok);
-            printf("%d\n", count); */
-            /* if((strlen(wordsTok) == 1  || strlen(codesTok) == 1)){
-                //517277398 --> 517274710
-            } */
-
             if((strcmp(wordsTok,"\n") != 0) && (strcmp(codesTok,"\n") != 0)){
                 strsep(&wordsEnd, ";");
                 strsep(&codesEnd, ";");

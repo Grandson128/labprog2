@@ -18,15 +18,4 @@ typedef struct node{
 
 
 
-// typedef struct{
-//     int key;
-//     List *wordList;
-// } Dictionary;
-
-
-
-
-
-
-
 #endif

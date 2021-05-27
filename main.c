@@ -6,14 +6,11 @@
 #include <ctype.h>
 #include "hashtable.c"
 
-Word *newWord;
-List map[m];
-List test;
-char *labelCode;
+Word *newWord; //user as auxiliary for the generateMap function in the parser.c
+List map[m]; //the hashtable
+char *labelCode; //string that holds the keypad strokes code for the current word beeing writen
 
 #include "parser.c"
-
-
 #include <gtk/gtk.h>
 #include <sys/time.h>
 
@@ -40,18 +37,21 @@ GtkWidget *buttonDelete;
 GTimeZone *utc;
 long last_click;
 int count_click;
-int flag = -9;
+int flag = -9; 
 GString str;
 int clickCount=0;
-int t9Active;
+int t9Active; //flag to track if t9 is active, 1 = true, 0 = false
 
-List handleNext;
-List handleNextRoot;
+List handleNext; //List that will holt the cycled word
+List handleNextRoot; //store root of the current cycle list to handle end of list
 
-char *lastInsertedWord;
+char *lastInsertedWord; //string to store last inserted word in the label
 
+/**
+ * Function to save lastInsertedWord and labelCode in the library files
+ * 
+*/
 void saveWordInFiles(void){
-
     FILE* codedFile = fopen("words/bigCodes.txt", "a");
     FILE* wordsFile = fopen("words/bigWords.txt", "a");
 
@@ -61,7 +61,6 @@ void saveWordInFiles(void){
         printf("\nCannot open words");
     }
 
-
     fprintf(codedFile, "\n%s;", labelCode);
     fprintf(wordsFile, "\n%s;", lastInsertedWord);
 
@@ -69,6 +68,10 @@ void saveWordInFiles(void){
     fclose(wordsFile);
 }
 
+/** 
+ * Function to print recommended words in the mains label
+ * 
+*/
 void printRecomendedWords(void){
     List aux = createList();
     
@@ -91,22 +94,58 @@ void printRecomendedWords(void){
 }
 
 
-// 1.!?
+/**
+ * Function that handles the pontiation event
+ * 
+ * If t9 is active, does nothing
+ * if t9 is not active, this key stores the current word in the label on the hashmap and on the files (words and codes)
+ * 
+*/
 void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
-
     struct timeval temp;
     gettimeofday(&temp, NULL);
     long now = temp.tv_sec * (int)1e6 + temp.tv_usec;
 
     gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
-    gchar *str2;
+    gchar *strLabel2 = (gchar *)gtk_label_get_text((GtkLabel*)label2);
+    gchar *str2 = " ";
 
     char last_char = str1[strlen(str1)-1];
     count_click = 0;
 
     if(t9Active == 1){
-        //strcat(labelCode, "2", 1);
-        //g_print("%s\n", labelCode);\nprintRecomendedWords();
+
+        if(strLabel2[0] != '\0' && strcmp(strLabel2, "SUGGESTED WORDS HERE") != 0){
+            if(strlen(str1) != 0){
+                strcat(str1,str2);
+            }
+            strcat(str1,strLabel2);
+            gtk_label_set_text((GtkLabel*)label,str1);
+        }
+        strLabel2[0] = '\0';
+        labelCode[0] = '\0';
+        gtk_label_set_text((GtkLabel*)label2, "");
+
+        if((now-last_click) > 900000 || flag != 1) {
+            str2=".";
+            strcat(str1,str2);
+            gtk_label_set_text((GtkLabel*)label,str1);
+        }
+        else {
+            if(last_char == '.'){
+                str1[strlen(str1)-1] = '!';
+                gtk_label_set_text((GtkLabel*)label,str1);
+            }
+            else if(last_char == '!'){
+                str1[strlen(str1)-1] = '?';
+                gtk_label_set_text((GtkLabel*)label,str1);
+            }
+            else if(last_char == '?'){
+                str1[strlen(str1)-1] = '.';
+                gtk_label_set_text((GtkLabel*)label,str1);
+            }
+        }
+
 
     }else{
 
@@ -122,8 +161,6 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
         }
 
         
-        
-
         if((now-last_click) > 900000 || flag != 1) {
             str2=".";
             strcat(str1,str2);
@@ -546,12 +583,11 @@ void button9_clicked(GtkWidget *widget, gpointer data){
     flag = 9;
 }
 
+/**
+ * Function to cycle through a list of words beeing recomended
+ * 
+*/
 void buttonNext_clicked(GtkWidget *widget, gpointer data){
-    //gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
-    //gchar *str2 = " ";
-    //strcat(str1,str2);
-    //gtk_label_set_text((GtkLabel*)label,str1);
-    
 
     if (flag != -1 && strlen(labelCode) > 0){
         if(map[hash(labelCode, m)]->next != NULL){
@@ -562,8 +598,6 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
         }
-
-
     }else{
 
         if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
@@ -572,23 +606,25 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
                 //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
-
         }else if(strlen(labelCode) > 0){
             handleNext = handleNextRoot;
             if(strlen(labelCode) <= strlen(handleNext->word->code)){
                 //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
-            }
-                
+            }     
         }
-
     }
     
-
     flag = -1;
-
 }
 
+/**
+ * Function that handles the space event
+ * 
+ * If t9 is active, this key selects the current word in the cycle
+ * if t9 is not active, this key stores the current word in the label on the hashmap and on the files (words and codes)
+ * 
+*/
 void button0_clicked(GtkWidget *widget, gpointer data){
     gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
     gchar *strLabel2 = (gchar *)gtk_label_get_text((GtkLabel*)label2);
@@ -603,7 +639,6 @@ void button0_clicked(GtkWidget *widget, gpointer data){
             strcat(str1,strLabel2);
             gtk_label_set_text((GtkLabel*)label,str1);
         }
-
         gtk_label_set_text((GtkLabel*)label2, "");
         
     }else{
@@ -611,7 +646,6 @@ void button0_clicked(GtkWidget *widget, gpointer data){
         gtk_label_set_text((GtkLabel*)label,str1);
         
         if(labelCode[0] != '\0' && lastInsertedWord[0] != '\0'){
-
             printf("%s --> %s\n", labelCode, lastInsertedWord);
             //insertWord
             newWord = createWord(strdup(labelCode), strdup(lastInsertedWord));
@@ -677,33 +711,27 @@ GdkPixbuf *create_pixbuf(const gchar * filename) {
     return pixbuf;
 }
 
-
+/**
+ * Function that initializes the map with empty lists
+*/
 void initMap(){
     for(int i =0; i<m; i++){
         map[i] = createList();
     }
 }
 
+/**
+ * Function to initialize the map population
+*/
 void initDictionary(){
     initMap();
     generateMap("words/bigWords.txt","words/bigCodes.txt");
-
-    /* printf("\n\n"); */
-    /* for(int i =0; i<m; i++){
-        printWordList(map[i]);
-    } */
 }
 
 
-//int main(){
-    //initDictionary();
-    //return 0;
-//}
-
-
 int main(int argc, char* argv[]) {
-    labelCode = (char *)malloc(50*sizeof(char));
-    lastInsertedWord = (char *)malloc(50*sizeof(char));
+    labelCode = (char *)malloc(254*sizeof(char));
+    lastInsertedWord = (char *)malloc(254*sizeof(char));
 
     initDictionary();
     t9Active = 1;
