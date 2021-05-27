@@ -733,6 +733,9 @@ int main(int argc, char* argv[]) {
     labelCode = (char *)malloc(254*sizeof(char));
     lastInsertedWord = (char *)malloc(254*sizeof(char));
 
+    label = (GtkWidget*) malloc(254*sizeof(GtkWidget));
+    label2 = (GtkWidget*) malloc(254*sizeof(GtkWidget));
+
     initDictionary();
     t9Active = 1;
 
