@@ -16,7 +16,7 @@ char *labelCode; //string that holds the keypad strokes code for the current wor
 
 GtkWidget *window;
 GtkWidget *vbox;
-GtkWidget *image; //por fazer, tava a pensar num logo da fcup
+//GdkPixbuf *image; //por fazer, tava a pensar num logo da fcup
 GtkWidget *label;
 GtkWidget *label2;
 GtkWidget *checkbutton;
@@ -696,7 +696,7 @@ static void toggled_t9 (GtkToggleButton *toggle_button,gpointer user_data){
 
 }
 
-
+/*
 GdkPixbuf *create_pixbuf(const gchar * filename) {
 
     GdkPixbuf *pixbuf;
@@ -709,7 +709,7 @@ GdkPixbuf *create_pixbuf(const gchar * filename) {
     }
 
     return pixbuf;
-}
+}*/
 
 /**
  * Function that initializes the map with empty lists
@@ -747,6 +747,8 @@ int main(int argc, char* argv[]) {
     gtk_window_set_title(GTK_WINDOW(window), "T9");
 
     gtk_container_set_border_width(GTK_CONTAINER(window), 5);
+
+    gtk_window_set_icon_from_file(GTK_WINDOW(window),"etc/logo.png",NULL);
 
     vbox= gtk_box_new(GTK_ORIENTATION_VERTICAL, 1);
     gtk_container_add(GTK_CONTAINER(window), vbox);
