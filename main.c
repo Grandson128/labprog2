@@ -37,7 +37,7 @@ GtkWidget *buttonDelete;
 GTimeZone *utc;
 long last_click;
 int count_click;
-int flag = -9; 
+int flag = -9;
 GString str;
 int clickCount=0;
 int t9Active; //flag to track if t9 is active, 1 = true, 0 = false
@@ -49,7 +49,7 @@ char *lastInsertedWord; //string to store last inserted word in the label
 
 /**
  * Function to save lastInsertedWord and labelCode in the library files
- * 
+ *
 */
 void saveWordInFiles(void){
     FILE* codedFile = fopen("words/bigCodes.txt", "a");
@@ -68,13 +68,13 @@ void saveWordInFiles(void){
     fclose(wordsFile);
 }
 
-/** 
+/**
  * Function to print recommended words in the mains label
- * 
+ *
 */
 void printRecomendedWords(void){
     List aux = createList();
-    
+
     if(map[hash(labelCode, m)]->next != NULL){
         aux = map[hash(labelCode, m)]->next;
     }else{
@@ -96,10 +96,10 @@ void printRecomendedWords(void){
 
 /**
  * Function that handles the pontiation event
- * 
+ *
  * If t9 is active, does nothing
  * if t9 is not active, this key stores the current word in the label on the hashmap and on the files (words and codes)
- * 
+ *
 */
 void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
     struct timeval temp;
@@ -160,7 +160,7 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
             lastInsertedWord[0] = '\0';
         }
 
-        
+
         if((now-last_click) > 900000 || flag != 1) {
             str2=".";
             strcat(str1,str2);
@@ -183,7 +183,7 @@ void button1_clicked(GtkWidget *widget, gpointer data, GdkEventButton *event){
 
     }
 
-    
+
 
     last_click = now;
     flag = 1;
@@ -376,7 +376,7 @@ void button5_clicked(GtkWidget *widget, gpointer data){
             }
         }
     }
-    
+
     last_click = now;
     flag = 5;
 }
@@ -423,8 +423,8 @@ void button6_clicked(GtkWidget *widget, gpointer data){
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
-    }    
-    
+    }
+
     last_click = now;
     flag = 6;
 }
@@ -477,7 +477,7 @@ void button7_clicked(GtkWidget *widget, gpointer data){
             }
         }
     }
-    
+
     last_click = now;
     flag = 7;
 }
@@ -524,7 +524,7 @@ void button8_clicked(GtkWidget *widget, gpointer data){
                 gtk_label_set_text((GtkLabel*)label,str1);
             }
         }
-        
+
     }
     last_click = now;
     flag = 8;
@@ -585,7 +585,7 @@ void button9_clicked(GtkWidget *widget, gpointer data){
 
 /**
  * Function to cycle through a list of words beeing recomended
- * 
+ *
 */
 void buttonNext_clicked(GtkWidget *widget, gpointer data){
 
@@ -611,19 +611,19 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
             if(strlen(labelCode) <= strlen(handleNext->word->code)){
                 //printf("SLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
-            }     
+            }
         }
     }
-    
+
     flag = -1;
 }
 
 /**
  * Function that handles the space event
- * 
+ *
  * If t9 is active, this key selects the current word in the cycle
  * if t9 is not active, this key stores the current word in the label on the hashmap and on the files (words and codes)
- * 
+ *
 */
 void button0_clicked(GtkWidget *widget, gpointer data){
     gchar *str1 = (gchar *)gtk_label_get_text((GtkLabel*)label);
@@ -640,11 +640,11 @@ void button0_clicked(GtkWidget *widget, gpointer data){
             gtk_label_set_text((GtkLabel*)label,str1);
         }
         gtk_label_set_text((GtkLabel*)label2, "");
-        
+
     }else{
         strcat(str1,str2);
         gtk_label_set_text((GtkLabel*)label,str1);
-        
+
         if(labelCode[0] != '\0' && lastInsertedWord[0] != '\0'){
             printf("%s --> %s\n", labelCode, lastInsertedWord);
             //insertWord
@@ -818,6 +818,9 @@ int main(int argc, char* argv[]) {
     gtk_box_pack_start(GTK_BOX(vbox),label2,TRUE,TRUE,20);
     gtk_box_pack_start(GTK_BOX(vbox),grid,TRUE,TRUE,20);
 
+    GtkCssProvider *css = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(css, "Pretty.css", NULL);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(css), GTK_STYLE_PROVIDER_PRIORITY_USER);
 
     g_signal_connect(G_OBJECT(window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (GTK_TOGGLE_BUTTON (checkbutton), "toggled", G_CALLBACK (toggled_t9), window);
@@ -825,8 +828,7 @@ int main(int argc, char* argv[]) {
 
     gtk_widget_show_all(window);
 
-    
+
     gtk_main();
     return 0;
 }
-
