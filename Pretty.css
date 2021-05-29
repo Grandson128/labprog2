@@ -1,46 +1,39 @@
 window {
-
-	background-color: green;
-
+	background-color: #545454;
 	border-radius: 2px;
 }
 
 label{
 	background-color: white;
-
 	border-radius: 10px;
-
 	font-size: 15px;
+	color: black;
 }
 
 grid {
-
-	margin-top: 10px;
+	margin-top: 7px;
 }
 
 button {
-
 	border-width: 3px;
 	border-color: darkgrey;
 	border-style: outset;
-
 	font-size: 20px;
-	color: black;
-
+	background-color: grey;
 	margin: 5px;
+	padding: 3px;
 }
-
-button:active {
-  background-color: #0274d9;
-}
-
 
 button:hover {
-	/*background-image: linear-gradient(to top right, blue 20%, #f0f 80%);*/
-  background-color: #3085a9;
-} 
-
-checkbutton:checked {
-  background-color: #56f9a0;
+	background-image: linear-gradient(to top right, #19bd44 30%, #117a2d 70%);
+  	background-color: #3085a9;
 }
 
+checkbutton{
+	background-color: #b53333;
+	border-radius:10px;
+}
+
+checkbutton:checked {
+  	background-color: #56f9a0;
+}

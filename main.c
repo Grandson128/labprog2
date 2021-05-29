@@ -812,6 +812,8 @@ int main(int argc, char* argv[]) {
     gtk_grid_attach(GTK_GRID(grid), buttonDelete, 2, 3, 1, 1);
     g_signal_connect(G_OBJECT(buttonDelete), "clicked",G_CALLBACK(buttonDelete_clicked), NULL);
 
+    gtk_grid_set_row_homogeneous(GTK_GRID(grid),TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(grid),TRUE);
 
     gtk_box_pack_start(GTK_BOX(vbox),label,TRUE,TRUE,20);
     gtk_box_pack_start(GTK_BOX(vbox),checkbutton,TRUE,TRUE,20);
