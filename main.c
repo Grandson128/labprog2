@@ -732,7 +732,10 @@ void initDictionary(){
 int main(int argc, char* argv[]) {
     labelCode = (char *)malloc(254*sizeof(char));
     lastInsertedWord = (char *)malloc(254*sizeof(char));
-
+    
+    labelCode[0] = '\0';
+    lastInsertedWord[0] = '\0';
+    
     label = (GtkWidget*) malloc(254*sizeof(GtkWidget));
     label2 = (GtkWidget*) malloc(254*sizeof(GtkWidget));
 
