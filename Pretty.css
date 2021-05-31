@@ -1,6 +1,10 @@
 window {
-	background-color: #545454;
+	background-color: #364046;
 	border-radius: 2px;
+}
+
+grid {
+	margin-top: 7px;
 }
 
 label{
@@ -8,10 +12,6 @@ label{
 	border-radius: 10px;
 	font-size: 15px;
 	color: black;
-}
-
-grid {
-	margin-top: 7px;
 }
 
 button {
