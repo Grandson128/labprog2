@@ -179,7 +179,7 @@ void printWordList(List list){
 int hash(char *v, int mNumber){
     int i, h=v[0];
 
-    for(i=0;i<=5; i++){
+    for(i=0;i<5; i++){
         if(v[i] != '\0'){
             h = (h * 7 + v[i]) % mNumber;
         }else{
