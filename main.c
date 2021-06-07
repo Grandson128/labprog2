@@ -594,23 +594,24 @@ void buttonNext_clicked(GtkWidget *widget, gpointer data){
             handleNextRoot = map[hash(labelCode, m)]->next;
             handleNext = handleNextRoot;
             if(strlen(labelCode) <= strlen(handleNext->word->code)) {
-                //printf("SLECTION -> %s\n", handleNext->word->text);
+                printf("1SeLECTION -> %s\n", handleNext->word->text);
                 gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
             }
         }
     }else{
-
-        if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
-            handleNext = handleNext->next;
-            if(strlen(labelCode) <= strlen(handleNext->word->code)){
-                //printf("SLECTION -> %s\n", handleNext->word->text);
-                gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
-            }
-        }else if(strlen(labelCode) > 0){
-            handleNext = handleNextRoot;
-            if(strlen(labelCode) <= strlen(handleNext->word->code)){
-                //printf("SLECTION -> %s\n", handleNext->word->text);
-                gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+        if(map[hash(labelCode, m)]->next != NULL){
+            if(handleNext != NULL && handleNext->next != NULL && strlen(labelCode) > 0){
+                handleNext = handleNext->next;
+                if(strlen(labelCode) <= strlen(handleNext->word->code)){
+                    printf("2SeLECTION -> %s\n", handleNext->word->text);
+                    gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+                }
+            }else if(strlen(labelCode) > 0){
+                handleNext = handleNextRoot;
+                if(strlen(labelCode) <= strlen(handleNext->word->code)){
+                    printf("3SeLECTION -> %s\n", handleNext->word->text);
+                    gtk_label_set_text((GtkLabel*)label2,handleNext->word->text);
+                }
             }
         }
     }
